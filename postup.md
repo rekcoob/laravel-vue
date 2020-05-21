@@ -7,3 +7,6 @@ php artisan make:factory ArticleFactory
 php artisan make:model Post
 
 php artisan migrate
+
+php artisan db:seed
+
