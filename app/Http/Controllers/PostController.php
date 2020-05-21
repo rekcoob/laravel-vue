@@ -24,16 +24,6 @@ class PostController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -41,7 +31,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $post = $request->isMethod('put') ? Post::findOrFail($request->post_id) : new Post;
+
+        $post->id = $request->input('post_id');
+        $post->title = $request->input('title');
+        $post->body = $request->input('body');
+
+        if($post->save()) {
+            return new PostResource($post);
+        }
     }
 
     /**
@@ -67,6 +65,12 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Get post
+        $post = Post::findOrFail($id);
+
+        // Return single post as a resource
+        if($post->delete()) {
+            return new PostResource($post);
+        }
     }
 }

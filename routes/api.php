@@ -25,10 +25,10 @@ Route::get('posts', 'PostController@index');
 Route::get('post/{id}', 'PostController@show');
 
 // Create new post
-Route::get('post', 'PostController@store');
+Route::post('post', 'PostController@store');
 
 // Update post
-Route::put('posts', 'PostController@store');
+Route::put('post', 'PostController@store');
 
 // Delete post
-Route::delete('posts', 'PostController@destroy');
+Route::delete('post/{id}', 'PostController@destroy');
