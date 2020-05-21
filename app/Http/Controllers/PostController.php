@@ -52,7 +52,11 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        // Get post
+        $post = Post::findOrFail($id);
+
+        // Return single post as a resource
+        return new PostResource($post);
     }
 
     /**
