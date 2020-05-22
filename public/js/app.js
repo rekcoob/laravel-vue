@@ -1964,6 +1964,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1990,7 +1995,6 @@ __webpack_require__.r(__webpack_exports__);
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        console.log(res);
         _this.posts = res.data;
         vm.makePagination(res.meta, res.links);
       })["catch"](function (err) {
@@ -37671,6 +37675,20 @@ var render = function() {
               )
             ]
           ),
+          _vm._v(" "),
+          _c("li", { staticClass: "page-item disabled" }, [
+            _c(
+              "a",
+              { staticClass: "page-link text-dark", attrs: { href: "#" } },
+              [
+                _vm._v(
+                  _vm._s(_vm.pagination.current_page) +
+                    " of " +
+                    _vm._s(_vm.pagination.last_page)
+                )
+              ]
+            )
+          ]),
           _vm._v(" "),
           _c(
             "li",

@@ -7,6 +7,11 @@
         <li v-bind:class="[{disabled: !pagination.prev_page_url}]" class="page-item">
           <a  @click="fetchPosts(pagination.prev_page_url)" class="page-link" href="#">Previous</a>
         </li>
+
+        <li class="page-item disabled">
+          <a class="page-link text-dark" href="#">{{ pagination.current_page }} of {{ pagination.last_page }}</a>
+        </li>
+
         <li v-bind:class="[{disabled: !pagination.next_page_url}]" class="page-item">
           <a @click="fetchPosts(pagination.next_page_url)" class="page-link" href="#">Next</a>
         </li>
@@ -48,7 +53,6 @@
         fetch(page_url)
         .then(res => res.json())
         .then(res => {
-          console.log(res);
           this.posts = res.data;
           vm.makePagination(res.meta, res.links);
         })
