@@ -20,7 +20,6 @@
             
             <navbar></navbar>
             <div class="container">
-                <example-component></example-component>
                 <posts></posts>
             </div>
         </div>
