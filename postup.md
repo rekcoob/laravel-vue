@@ -15,3 +15,11 @@ php artisan db:seed
 php artisan make:controller PostController --resource
 
 php artisan make:resource Post
+
+
+## VUE
+composer require laravel/ui
+
+php artisan ui vue --auth
+
+npm install && npm run dev
