@@ -1947,6 +1947,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1966,10 +1972,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     fetchPosts: function fetchPosts() {
+      var _this = this;
+
       fetch('api/posts').then(function (res) {
         return res.json();
       }).then(function (res) {
-        console.log(res.data);
+        _this.posts = res.data;
       });
     }
   }
@@ -37608,16 +37616,23 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    [
+      _c("h1", [_vm._v("Posts")]),
+      _vm._v(" "),
+      _vm._l(_vm.posts, function(post) {
+        return _c("div", { key: post.id, staticClass: "card card-body mb-2" }, [
+          _c("h3", [_vm._v(_vm._s(post.title))]),
+          _vm._v(" "),
+          _c("p", [_vm._v(_vm._s(post.body))])
+        ])
+      })
+    ],
+    2
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("Posts")])])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
