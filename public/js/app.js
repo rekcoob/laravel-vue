@@ -1969,6 +1969,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2009,6 +2024,80 @@ __webpack_require__.r(__webpack_exports__);
         prev_page_url: links.prev
       };
       this.pagination = pagination;
+    },
+    deletePost: function deletePost(id) {
+      var _this2 = this;
+
+      if (confirm('Are You Sure?')) {
+        fetch("api/post/".concat(id), {
+          method: 'delete'
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          alert('Post Removed');
+
+          _this2.fetchPosts();
+        })["catch"](function (err) {
+          return console.log(err);
+        });
+      }
+    },
+    addPost: function addPost() {
+      var _this3 = this;
+
+      if (this.edit === false) {
+        // Add
+        fetch('api/post', {
+          method: 'post',
+          body: JSON.stringify(this.post),
+          headers: {
+            'content-type': 'application/json'
+          }
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          _this3.clearForm();
+
+          alert('Post Added');
+
+          _this3.fetchPosts();
+        })["catch"](function (err) {
+          return console.log(err);
+        });
+      } else {
+        // Update
+        fetch('api/post', {
+          method: 'put',
+          body: JSON.stringify(this.post),
+          headers: {
+            'content-type': 'application/json'
+          }
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          _this3.clearForm();
+
+          alert('Post Updated');
+
+          _this3.fetchPosts();
+        })["catch"](function (err) {
+          return console.log(err);
+        });
+      }
+    },
+    editPost: function editPost(post) {
+      this.edit = true;
+      this.post.id = post.id;
+      this.post.post_id = post.id;
+      this.post.title = post.title;
+      this.post.body = post.body;
+    },
+    clearForm: function clearForm() {
+      this.edit = false;
+      this.post.id = null;
+      this.post.post_id = null;
+      this.post.title = '';
+      this.post.body = '';
     }
   }
 });
@@ -37649,7 +37738,91 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("h1", [_vm._v("Posts")]),
+      _c("h2", [_vm._v("Posts")]),
+      _vm._v(" "),
+      _c(
+        "form",
+        {
+          staticClass: "mb-3",
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.addPost($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "form-group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.post.title,
+                  expression: "post.title"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", placeholder: "Title" },
+              domProps: { value: _vm.post.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.post, "title", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.post.body,
+                  expression: "post.body"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "textarea", placeholder: "Body" },
+              domProps: { value: _vm.post.body },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.post, "body", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-light btn-block",
+              attrs: { type: "submit" }
+            },
+            [_vm._v("Save")]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger btn-block mb-3",
+          on: {
+            click: function($event) {
+              return _vm.clearForm()
+            }
+          }
+        },
+        [_vm._v("Cancel")]
+      ),
       _vm._v(" "),
       _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
         _c("ul", { staticClass: "pagination" }, [
@@ -37719,7 +37892,35 @@ var render = function() {
         return _c("div", { key: post.id, staticClass: "card card-body mb-2" }, [
           _c("h3", [_vm._v(_vm._s(post.title))]),
           _vm._v(" "),
-          _c("p", [_vm._v(_vm._s(post.body))])
+          _c("p", [_vm._v(_vm._s(post.body))]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-warning mb-2",
+              on: {
+                click: function($event) {
+                  return _vm.editPost(post)
+                }
+              }
+            },
+            [_vm._v("Edit")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-danger",
+              on: {
+                click: function($event) {
+                  return _vm.deletePost(post.id)
+                }
+              }
+            },
+            [_vm._v("Delete")]
+          )
         ])
       })
     ],

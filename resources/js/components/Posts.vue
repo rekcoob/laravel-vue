@@ -1,7 +1,19 @@
 <template>
   <div>
-    <h1>Posts</h1> 
-
+    <h2>Posts</h2> 
+    <form @submit.prevent="addPost" class="mb-3">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Title"
+        v-model="post.title">
+      </div>
+      <div class="form-group">
+        <input type="textarea" class="form-control" placeholder="Body"
+        v-model="post.body"></textarea>
+      </div>
+      <button type="submit" class="btn btn-light btn-block">Save</button>
+    </form>
+    <button @click="clearForm()" class="btn btn-danger btn-block mb-3">Cancel</button>
+    
     <nav aria-label="Page navigation example">
       <ul class="pagination">
         <li v-bind:class="[{disabled: !pagination.prev_page_url}]" class="page-item">
@@ -22,6 +34,9 @@
     v-bind:key="post.id">
       <h3>{{ post.title }}</h3>
       <p>{{ post.body }}</p>
+      <hr>
+      <button @click="editPost(post)" class="btn btn-warning mb-2">Edit</button>
+      <button @click="deletePost(post.id)" class="btn btn-danger">Delete</button>
     </div>
   </div>
 </template>
@@ -40,12 +55,10 @@
         pagination: {},
         edit: false
       }
-    },    
-
+    },  
     created() {
       this.fetchPosts();
     },
-
     methods: {
       fetchPosts(page_url) {
         let vm = this;        
@@ -59,7 +72,6 @@
         .catch(err => console.log(err));
 
       },
-
       makePagination(meta, links) {
         let pagination = {
           current_page: meta.current_page,
@@ -69,6 +81,68 @@
         }
 
         this.pagination = pagination;
+      },
+      deletePost(id) {
+        if(confirm('Are You Sure?')){
+          fetch(`api/post/${id}`, {
+            method: 'delete'
+          })
+          .then(res => res.json())
+          .then(data => {
+            alert('Post Removed');
+            this.fetchPosts();
+          })
+          .catch(err => console.log(err));
+        }
+      },
+      addPost() {
+        if (this.edit === false) {
+          // Add
+          fetch('api/post', {
+            method: 'post',
+            body: JSON.stringify(this.post),
+            headers: {
+              'content-type': 'application/json'
+            }
+          })
+            .then(res => res.json())
+            .then(data => {
+              this.clearForm();
+              alert('Post Added');
+              this.fetchPosts();
+            })
+            .catch(err => console.log(err));
+        } else {
+          // Update
+          fetch('api/post', {
+            method: 'put',
+            body: JSON.stringify(this.post),
+            headers: {
+              'content-type': 'application/json'
+            }
+          })
+            .then(res => res.json())
+            .then(data => {
+              this.clearForm();
+              alert('Post Updated');
+              this.fetchPosts();
+            })
+            .catch(err => console.log(err));
+        }
+      },
+      editPost(post) {
+        this.edit = true;
+        this.post.id = post.id;
+        this.post.post_id = post.id;
+        this.post.title = post.title;
+        this.post.body = post.body;
+      },    
+      clearForm() {
+        this.edit = false;
+        this.post.id = null;
+        this.post.post_id = null;
+        this.post.title = '';
+        this.post.body = '';
       }
     }
   }
