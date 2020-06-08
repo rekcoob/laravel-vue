@@ -1,7 +1,6 @@
 # Laravel/Vue App
 
 > Laravel 7.12 API that uses the API resources with a Vue.js frontend
-> crud app with pagination
 
 ## Quick Start
 
